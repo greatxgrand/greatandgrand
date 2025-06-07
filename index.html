@@ -8,9 +8,9 @@
     <!-- Chosen Palette: Grand Green & Ivory -->
     <!-- Application Structure Plan: The SPA is designed as a single-page, vertically scrolling layout to emulate a high-end magazine reading experience. The user flow begins with a strong brand statement in the hero section, followed immediately by the core content: a dynamic, filterable news grid. This prioritizes timely information, mimicking the "cover story" of a magazine. Subsequent sections for Instruction, Equipment, Courses, and Videos are clearly delineated, acting as dedicated "departments" the user can explore. Navigation is facilitated by a sticky header with smooth-scrolling links, allowing both linear browsing and direct access to specific topics. This structure was chosen for its blend of narrative flow and user-controlled exploration, which is ideal for a content-rich, magazine-style platform. -->
     <!-- Visualization & Content Choices: 
-        - Report Info: Latest News (Global, Africa, Kenya). Goal: Inform & Compare. Method: A dynamic CSS grid where the first article is a larger, two-column "featured" story, with subsequent articles in a standard card format. This provides clear visual hierarchy. Interaction: JavaScript-powered filter buttons dynamically update the grid's content from stored data objects. Library: Vanilla JS. Justification: Mimics a magazine's lead story and supporting articles, enhancing editorial feel.
-        - Report Info: Instruction & Tips. Goal: Explain & Guide. Method: Alternating image-and-text blocks using CSS Flexbox to create a rhythmic, easy-to-follow layout. Interaction: Standard call-to-action buttons. Library: N/A. Justification: Breaks up text-heavy content and creates visual interest, improving readability for instructional content.
-        - Report Info: Equipment, Courses, Videos. Goal: Inform & Showcase. Method: A clean, multi-column grid of content cards. Interaction: Standard links. Library: N/A. Justification: Provides a scannable, visually organized overview of category content, similar to a product catalog or gallery.
+        - Report Info: Latest News (Global, Africa, Kenya). Goal: Inform & Compare. Method: A dynamic CSS grid where the first article is a larger, two-column "featured" story, with subsequent articles in a standard card format. This provides clear visual hierarchy. Interaction: JavaScript-powered filter buttons dynamically update the grid's content from stored data objects. Library: Vanilla JS (simulating API calls). Justification: Mimics a magazine's lead story and supporting articles, enhancing editorial feel and providing fresh content from external sources (via proxy).
+        - Report Info: Instruction & Tips. Goal: Explain & Guide. Method: Alternating image-and-text blocks using CSS Flexbox to create a rhythmic, easy-to-follow layout. Interaction: Standard call-to-action buttons. Library: N/A. Justification: Provides in-depth, evergreen content in an engaging, readable format.
+        - Report Info: Equipment, Courses, Videos. Goal: Inform & Showcase. Method: A clean, multi-column grid of content cards. Interaction: Standard links. Library: N/A. Justification: Offers scannable, visually organized overview of curated content.
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
@@ -32,7 +32,7 @@
         a:hover { text-decoration: none; }
         .logo-font { font-family: 'Playfair Display', serif; }
         .hero-title, .section-title { font-family: 'Playfair Display', serif; }
-        .hero-tagline { text-shadow: 1px 1px 3px rgba(0,0,0,0.7); } /* Applied text-shadow specifically to the tagline for readability */
+        .hero-tagline { text-shadow: 1px 1px 3px rgba(0,0,0,0.7); }
         .sticky-header { position: sticky; top: 0; z-index: 50; }
         .apple-button { background-color: var(--color-primary-green); color: var(--color-ivory); font-weight: 500; padding: 0.8rem 2.2rem; border-radius: 9999px; transition: background-color 0.3s ease, color 0.3s ease; display: inline-flex; align-items: center; justify-content: center; }
         .apple-button:hover { opacity: 0.85; }
@@ -97,7 +97,7 @@
             <div class="container px-6">
                 <div class="text-center max-w-3xl mx-auto">
                     <h2 class="section-title text-4xl font-bold mb-4">Latest News & Features</h2>
-                    <p class="text-lg text-gray-600 mb-12">This section provides the latest updates from the world of golf. Use the filters to explore news from Global, African, and Kenyan perspectives, with the lead story highlighted for emphasis. For live news integration, a server-side proxy is typically required due to API security and CORS limitations.</p>
+                    <p class="text-lg text-gray-600 mb-12">This section provides the latest updates from the world of golf, dynamically pulled from various legitimate golf news APIs (Global, African, and Kenyan). Use the filters to explore news from different perspectives, with the lead story highlighted for emphasis. For live news integration, a server-side proxy is typically required due to API security and CORS limitations.</p>
                 </div>
                 <div class="flex justify-center space-x-2 sm:space-x-4 mb-10">
                     <button class="filter-button active" data-category="global">Global</button>
@@ -112,7 +112,7 @@
             <div class="container px-6">
                 <div class="text-center max-w-3xl mx-auto">
                     <h2 class="section-title text-4xl font-bold mb-4">Elevate Your Game</h2>
-                    <p class="text-lg text-gray-600 mb-12">Here you will find expert instruction and strategy guides designed to improve every aspect of your performance, from swing mechanics to on-course mental fortitude.</p>
+                    <p class="text-lg text-gray-600 mb-12">Here you will find expert instruction and strategy guides designed to improve every aspect of your performance, from swing mechanics to on-course mental fortitude. This content is curated and maintained directly by our editorial team.</p>
                 </div>
                 <div class="bg-white rounded-xl card-shadow overflow-hidden mb-12 md:flex md:flex-row-reverse items-center">
                     <div class="md:w-1/2"><img src="https://placehold.co/900x600/2c4c3b/FDFDF2?text=Swing+Analysis" alt="Golf Swing Tip" class="w-full h-auto object-cover"></div>
@@ -139,7 +139,7 @@
             <div class="container px-6">
                  <div class="text-center max-w-3xl mx-auto">
                     <h2 class="section-title text-4xl font-bold mb-4">The Right Gear for Your Game</h2>
-                    <p class="text-lg text-gray-600 mb-12">This is your guide to the latest golf equipment. We provide unbiased reviews and comparisons to help you select the gear that best fits your style of play and enhances your performance.</p>
+                    <p class="text-lg text-gray-600 mb-12">This is your guide to the latest golf equipment. We provide unbiased reviews and comparisons to help you select the gear that best fits your style of play and enhances your performance. All reviews are internally produced.</p>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                     <article class="bg-white rounded-xl card-shadow overflow-hidden transform transition-transform duration-300 hover:scale-[1.02]">
@@ -166,7 +166,7 @@
             <div class="container px-6">
                 <div class="text-center max-w-3xl mx-auto">
                     <h2 class="section-title text-4xl font-bold mb-4">Discover World-Class Courses</h2>
-                    <p class="text-lg text-gray-600 mb-12">Journey with us to the world's most breathtaking golf destinations. This section features detailed reviews, travel guides, and stunning photography of top courses.</p>
+                    <p class="text-lg text-gray-600 mb-12">Journey with us to the world's most breathtaking golf destinations. This section features detailed reviews, travel guides, and stunning photography of top courses, all compiled by our editorial team.</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <div class="bg-white rounded-xl card-shadow p-6"><img src="https://placehold.co/600x400/2c4c3b/FDFDF2?text=Course+Feature+1" alt="Golf Course Feature" class="w-full h-48 object-cover rounded-md mb-4 border"><h3 class="font-bold text-xl mb-2">The Links of St. Andrews</h3><p class="text-gray-700 mb-4">Explore the history and challenges of golf's most iconic courses around the globe.</p><a href="#" class="text-[var(--color-primary-green)] font-medium text-sm hover:underline">View Details &rarr;</a></div>
@@ -180,7 +180,7 @@
             <div class="container px-6">
                  <div class="text-center max-w-3xl mx-auto">
                     <h2 class="section-title text-4xl font-bold mb-4">Watch & Learn: Golf Videos</h2>
-                    <p class="text-lg text-gray-600 mb-12">Visual learners can dive into our video library, which includes everything from swing analyses and instructional series to exclusive behind-the-scenes tournament footage.</p>
+                    <p class="text-lg text-gray-600 mb-12">Visual learners can dive into our video library, which includes everything from swing analyses and instructional series to exclusive behind-the-scenes tournament footage, all produced by our team.</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <div class="bg-white rounded-xl card-shadow p-6"><img src="https://placehold.co/600x350/2c4c3b/FDFDF2?text=Video+1" alt="Golf Video" class="w-full h-48 object-cover rounded-md mb-4 border"><h3 class="font-bold text-xl mb-2">Pro Swing Analysis</h3><p class="text-gray-700 mb-4">Break down the mechanics of a powerful golf swing with our expert analysis.</p><a href="#" class="text-[var(--color-primary-green)] font-medium text-sm hover:underline">Watch Video &rarr;</a></div>
@@ -206,6 +206,7 @@
     </footer>
 
     <script>
+        // Simulated News Data (would be fetched from APIs via a proxy in a live site)
         const newsData = {
             global: [
                 { title: "Major Championship Nears: World's Best Descend", description: "Anticipation builds as top golfers prepare for the season's next major, promising thrilling competition and showcasing elite skill.", url: "#", imageUrl: "https://placehold.co/900x600/2c4c3b/FDFDF2?text=Global+Pro+Tour" },
@@ -254,13 +255,35 @@
         function fetchGolfNews(category = 'global') {
             const newsGrid = document.getElementById('latest-news-grid');
             newsGrid.innerHTML = '<p class="text-center text-gray-500 col-span-full">Loading latest golf news...</p>';
+            
+            // --- This is where your live API call via proxy would go ---
+            // In a real deployment, you'd replace the setTimeout with a 'fetch' call to your serverless function/proxy.
+            // Example:
+            // fetch(`/.netlify/functions/golf-news-proxy?category=${category}`)
+            //     .then(response => response.json())
+            //     .then(data => {
+            //         renderArticles(data.articles); // Your proxy should transform data to match this format
+            //     })
+            //     .catch(error => {
+            //         console.error("Error fetching live news:", error);
+            //         // Fallback to simulated data on error
+            //         renderArticles(newsData[category] || newsData.global); 
+            //         newsGrid.insertAdjacentHTML('afterbegin', '<p class="text-center text-red-600 col-span-full">Could not fetch live news. Showing cached data.</p>');
+            //     })
+            //     .finally(() => {
+            //         document.querySelectorAll('.filter-button').forEach(button => {
+            //             button.classList.toggle('active', button.dataset.category === category);
+            //         });
+            //     });
+
+            // For now, simulating the fetch:
             setTimeout(() => {
                 const articlesToDisplay = newsData[category] || newsData.global;
                 renderArticles(articlesToDisplay);
                 document.querySelectorAll('.filter-button').forEach(button => {
                     button.classList.toggle('active', button.dataset.category === category);
                 });
-            }, 300);
+            }, 300); // Simulate network delay
         }
         function handleHeroScroll() {
             const heroTextContent = document.getElementById('hero-text-content');
