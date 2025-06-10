@@ -3,334 +3,507 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Great and Grand - Precision Golf Reporting</title>
-    
-    <!-- Chosen Palette: Grand Green & Ivory -->
-    <!-- Application Structure Plan: The SPA is designed as a single-page, vertically scrolling layout to emulate a high-end magazine reading experience. The user flow begins with a strong brand statement in the hero section, followed immediately by the core content: a dynamic, filterable news grid. This prioritizes timely information, mimicking the "cover story" of a magazine. Subsequent sections for Instruction, Equipment, Courses, and Videos are clearly delineated, acting as dedicated "departments" the user can explore. Navigation is facilitated by a sticky header with smooth-scrolling links, allowing both linear browsing and direct access to specific topics. This structure was chosen for its blend of narrative flow and user-controlled exploration, which is ideal for a content-rich, magazine-style platform. -->
-    <!-- Visualization & Content Choices: 
-        - Report Info: Latest News (Global, Africa, Kenya). Goal: Inform & Compare. Method: A dynamic CSS grid where the first article is a larger, two-column "featured" story, with subsequent articles in a standard card format. This provides clear visual hierarchy. Interaction: JavaScript-powered filter buttons dynamically update the grid's content from stored data objects. Library: Vanilla JS (simulating API calls). Justification: Mimics a magazine's lead story and supporting articles, enhancing editorial feel and providing fresh content from external sources (via proxy).
-        - Report Info: Instruction & Tips. Goal: Explain & Guide. Method: Alternating image-and-text blocks using CSS Flexbox to create a rhythmic, easy-to-follow layout. Interaction: Standard call-to-action buttons. Library: N/A. Justification: Provides in-depth, evergreen content in an engaging, readable format.
-        - Report Info: Equipment, Courses, Videos. Goal: Inform & Showcase. Method: A clean, multi-column grid of content cards. Interaction: Standard links. Library: N/A. Justification: Offers scannable, visually organized overview of curated content.
-    -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <title>The Great and Grand - Discover Golf in Africa</title>
     <style>
-        :root {
-            --color-primary-green: #2c4c3b;
-            --color-ivory: #FDFDF2;
-            --color-light-ivory-bg: #F8F8F0;
-            --color-dark-text: #1a2a1f;
-            --color-border-subtle: #EBEBDD;
+        /* Basic Reset & Box Sizing */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        html { scroll-behavior: smooth; }
-        body { font-family: 'Outfit', sans-serif; background-color: var(--color-ivory); line-height: 1.6; color: var(--color-dark-text); overflow-x: hidden; }
-        .container { max-width: 1280px; margin: 0 auto; }
-        .card-shadow { box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03); }
-        a:hover { text-decoration: none; }
-        .logo-font { font-family: 'Playfair Display', serif; }
-        .hero-title, .section-title { font-family: 'Playfair Display', serif; }
-        .hero-tagline { text-shadow: 1px 1px 3px rgba(0,0,0,0.7); }
-        .sticky-header { position: sticky; top: 0; z-index: 50; }
-        .apple-button { background-color: var(--color-primary-green); color: var(--color-ivory); font-weight: 500; padding: 0.8rem 2.2rem; border-radius: 9999px; transition: background-color 0.3s ease, color 0.3s ease; display: inline-flex; align-items: center; justify-content: center; }
-        .apple-button:hover { opacity: 0.85; }
-        .filter-button.active { background-color: var(--color-primary-green); color: var(--color-ivory); }
-        .filter-button { background-color: var(--color-light-ivory-bg); color: var(--color-primary-green); border: 1px solid var(--color-primary-green); padding: 0.5rem 1.25rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 500; transition: all 0.2s ease-in-out; cursor: pointer; }
-        .filter-button:hover:not(.active) { background-color: var(--color-primary-green); color: white; opacity: 0.85; }
-        .fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
-        .fade-in-section.is-visible { opacity: 1; transform: translateY(0); }
-        .hero-text-content { will-change: opacity, transform; transition: opacity 0.1s linear, transform 0.1s linear; }
-        .featured-news-article { display: flex; flex-direction: column; }
-        .featured-news-article .article-img { height: 250px; }
-        @media (min-width: 768px) { .featured-news-article { grid-column: span 2 / span 2; flex-direction: row; } .featured-news-article .article-img { width: 50%; height: auto; } .featured-news-article .article-content { width: 50%; padding-left: 2rem; } }
-        @media (min-width: 1024px) { .featured-news-article .article-img { height: 350px; } }
-        .mobile-menu { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--color-dark-text); color: var(--color-ivory); z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; transform: translateX(100%); transition: transform 0.3s ease-in-out; padding: 2rem; text-align: center; }
-        .mobile-menu.open { transform: translateX(0); }
-        .mobile-menu a { font-size: 1.5rem; padding: 1rem 0; display: block; width: 100%; color: var(--color-ivory); transition: color 0.2s ease-in-out; }
-        .mobile-menu a:hover { color: var(--color-primary-green); }
-        .close-menu-button { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: var(--color-ivory); font-size: 2rem; cursor: pointer; z-index: 101; }
+        /* Color Variables */
+        :root {
+            --primary-green: #2E3D35; /* Dark Green */
+            --secondary-ivory: #F8F4E3; /* Soft Ivory */
+            --text-color-light: #F8F4E3;
+            --text-color-dark: #2E3D35;
+            --article-bg: #FFFFFF; /* White for article backgrounds to pop */
+            --hover-green: #1a2720; /* Slightly darker green for hover effects */
+            --hover-ivory: #e0d8c0; /* Slightly darker ivory for hover effects */
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--secondary-ivory);
+            color: var(--text-color-dark);
+            line-height: 1.6;
+            scroll-behavior: smooth; /* Smooth scrolling for anchor links */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px; /* Horizontal padding for responsiveness */
+        }
+
+        /* Header Styling */
+        header {
+            background-color: var(--primary-green);
+            color: var(--text-color-light);
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        header .logo {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase; /* Ensure logo is uppercase */
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap; /* Allow navigation items to wrap */
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: var(--text-color-light);
+            text-decoration: none;
+            font-size: 1.1em;
+            padding: 5px 0;
+            transition: color 0.3s ease, border-bottom 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--hover-ivory);
+            border-bottom: 2px solid var(--hover-ivory);
+        }
+
+        /* Hero Section */
+        .hero {
+            background-color: var(--secondary-ivory);
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--text-color-dark);
+        }
+
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            color: var(--primary-green);
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+
+        .hero .cta-buttons a {
+            display: inline-block;
+            background-color: var(--primary-green);
+            color: var(--text-color-light);
+            padding: 15px 30px;
+            margin: 0 10px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .hero .cta-buttons a:hover {
+            background-color: var(--hover-green);
+            transform: translateY(-2px);
+        }
+
+        /* Discover Page Section */
+        #discover {
+            padding: 60px 0;
+            background-color: var(--secondary-ivory);
+        }
+
+        #discover h2 {
+            text-align: center;
+            font-size: 3em;
+            color: var(--primary-green);
+            margin-bottom: 50px;
+        }
+
+        .magazine-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .magazine-article {
+            background-color: var(--article-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .magazine-article:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .magazine-article img {
+            width: 100%;
+            height: 220px; /* Slightly taller images */
+            object-fit: cover;
+            display: block;
+        }
+
+        .article-content {
+            padding: 25px;
+        }
+
+        .article-content h3 {
+            font-size: 1.7em;
+            color: var(--primary-green);
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .article-content p {
+            font-size: 1em;
+            color: #555;
+            margin-bottom: 20px;
+            height: 75px; /* Fixed height for excerpt, add ellipsis with JS/CSS if needed */
+            overflow: hidden;
+        }
+
+        .read-more {
+            display: inline-block;
+            background-color: var(--primary-green);
+            color: var(--text-color-light);
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.95em;
+            transition: background-color 0.3s ease;
+        }
+
+        .read-more:hover {
+            background-color: var(--hover-green);
+        }
+
+        /* Store Coming Soon Section */
+        #store-coming-soon {
+            background-color: var(--primary-green);
+            color: var(--text-color-light);
+            text-align: center;
+            padding: 100px 20px; /* More vertical padding */
+            margin-top: 60px;
+        }
+
+        #store-coming-soon h2 {
+            font-size: 3.5em;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        #store-coming-soon p {
+            font-size: 1.4em;
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+
+        .notify-form {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap; /* Allow form elements to wrap */
+            gap: 15px; /* Space between input and button */
+        }
+
+        .notify-form input[type="email"] {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            width: 350px;
+            max-width: 90%; /* Adjust width for smaller screens */
+            background-color: var(--secondary-ivory);
+            color: var(--text-color-dark);
+        }
+
+        .notify-form button {
+            background-color: var(--secondary-ivory);
+            color: var(--primary-green);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-weight: bold;
+        }
+
+        .notify-form button:hover {
+            background-color: var(--hover-ivory);
+            color: var(--primary-green);
+        }
+
+        /* About Us & Contact Section (hidden by default, for future use) */
+        #about, #contact {
+            padding: 60px 0;
+            text-align: center;
+            color: var(--text-color-dark);
+            background-color: var(--secondary-ivory);
+        }
+
+        #about h2, #contact h2 {
+            font-size: 2.8em;
+            color: var(--primary-green);
+            margin-bottom: 30px;
+        }
+
+        #about p, #contact p {
+            font-size: 1.1em;
+            max-width: 800px;
+            margin: 0 auto 15px;
+        }
+
+
+        /* Footer Styling */
+        footer {
+            background-color: var(--primary-green);
+            color: var(--text-color-light);
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 60px;
+            font-size: 0.95em;
+        }
+
+        footer p {
+            margin-bottom: 10px;
+        }
+
+        footer .social-links a {
+            color: var(--text-color-light);
+            margin: 0 12px;
+            text-decoration: none;
+            font-size: 1.3em;
+            transition: color 0.3s ease;
+        }
+
+        footer .social-links a:hover {
+            color: var(--hover-ivory);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8em;
+            }
+            #discover h2, #store-coming-soon h2 {
+                font-size: 2.5em;
+            }
+            .magazine-article img {
+                height: 180px;
+            }
+            .article-content h3 {
+                font-size: 1.4em;
+            }
+            .hero .cta-buttons a {
+                padding: 12px 25px;
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header .logo {
+                font-size: 2em;
+            }
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            nav ul li {
+                margin: 8px 0;
+            }
+            .hero h1 {
+                font-size: 2.2em;
+            }
+            .hero p {
+                font-size: 1.1em;
+            }
+            #discover h2, #store-coming-soon h2 {
+                font-size: 2em;
+            }
+            .magazine-grid {
+                grid-template-columns: 1fr; /* Stack articles on smaller screens */
+            }
+            .magazine-article img {
+                height: 200px; /* Give more height when stacked */
+            }
+            .notify-form {
+                flex-direction: column;
+                align-items: center;
+            }
+            .notify-form input[type="email"] {
+                width: 90%;
+            }
+            .notify-form button {
+                width: 90%;
+            }
+            #store-coming-soon p {
+                font-size: 1.1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.8em;
+            }
+            .hero p {
+                font-size: 1em;
+            }
+            .hero .cta-buttons a {
+                display: block; /* Stack buttons */
+                margin: 10px auto;
+                width: 80%;
+            }
+            #discover h2, #store-coming-soon h2 {
+                font-size: 1.8em;
+            }
+            .article-content p {
+                height: auto; /* Allow text to flow naturally */
+            }
+        }
     </style>
 </head>
-<body class="antialiased">
-    <header class="bg-white bg-opacity-95 backdrop-blur-sm border-b border-[var(--color-border-subtle)] py-4 sticky-header">
-        <div class="container mx-auto px-6 flex justify-between items-center">
-            <a href="#" class="text-3xl font-extrabold text-[var(--color-primary-green)] tracking-tight logo-font">THE GREAT AND <span class="text-[var(--color-primary-green)]">GRAND</span></a>
-            <nav class="hidden md:flex space-x-8">
-                <a href="#latest-news-section" class="text-sm font-medium text-[var(--color-primary-green)] hover:opacity-100 uppercase tracking-wide transition duration-300 opacity-80">Latest</a>
-                <a href="#instruction-tips-section" class="text-sm font-medium text-[var(--color-primary-green)] hover:opacity-100 uppercase tracking-wide transition duration-300 opacity-80">Instruction</a>
-                <a href="#equipment-reviews-section" class="text-sm font-medium text-[var(--color-primary-green)] hover:opacity-100 uppercase tracking-wide transition duration-300 opacity-80">Equipment</a>
-                <a href="#courses-section" class="text-sm font-medium text-[var(--color-primary-green)] hover:opacity-100 uppercase tracking-wide transition duration-300 opacity-80">Courses</a>
-                <a href="#latest-news-section" class="text-sm font-medium text-[var(--color-primary-green)] hover:opacity-100 uppercase tracking-wide transition duration-300 opacity-80">News</a>
-                <a href="#videos-section" class="text-sm font-medium text-[var(--color-primary-green)] hover:opacity-100 uppercase tracking-wide transition duration-300 opacity-80">Videos</a>
+<body>
+
+    <header>
+        <div class="container">
+            <div class="logo">THE GREAT AND GRAND</div>
+            <nav>
+                <ul>
+                    <li><a href="#discover">Discover</a></li>
+                    <li><a href="#store-coming-soon">Store</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
             </nav>
-            <button id="mobile-menu-button" class="md:hidden p-2 text-[var(--color-primary-green)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-green)]">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-            </button>
         </div>
     </header>
 
-    <div id="mobile-menu" class="mobile-menu hidden md:hidden">
-        <button id="close-mobile-menu" class="close-menu-button">&times;</button>
-        <a href="#latest-news-section" class="text-lg font-medium uppercase tracking-wide">Latest</a>
-        <a href="#instruction-tips-section" class="text-lg font-medium uppercase tracking-wide">Instruction</a>
-        <a href="#equipment-reviews-section" class="text-lg font-medium uppercase tracking-wide">Equipment</a>
-        <a href="#courses-section" class="text-lg font-medium uppercase tracking-wide">Courses</a>
-        <a href="#latest-news-section" class="text-lg font-medium uppercase tracking-wide">News</a>
-        <a href="#videos-section" class="text-lg font-medium uppercase tracking-wide">Videos</a>
-    </div>
-
-    <main class="pt-12">
-        <section id="hero-section" class="relative w-full h-screen max-h-[800px] bg-cover bg-center flex items-center justify-center text-center overflow-hidden" 
-                 style="background-image: url('https://placehold.co/1920x1080/2c4c3b/FDFDF2?text=THE+GREAT+AND+GRAND');">
-            <div class="absolute inset-0 bg-black opacity-50"></div>
-            <div id="hero-text-content" class="relative z-10 text-white px-4 py-8 max-w-4xl hero-text-content">
-                <p class="text-lg md:text-xl font-medium mb-10 opacity-90 hero-tagline">
-                    Crafted For Those Who Define Their Own Play
-                </p>
-                <a href="#latest-news-section" class="apple-button">Explore Golf Insights</a>
-            </div>
-        </section>
-
-        <section id="latest-news-section" class="bg-[var(--color-light-ivory-bg)] py-20 fade-in-section">
-            <div class="container px-6">
-                <div class="text-center max-w-3xl mx-auto">
-                    <h2 class="section-title text-4xl font-bold mb-4">Latest News & Features</h2>
-                    <p class="text-lg text-gray-600 mb-12">This section provides the latest updates from the world of golf, dynamically pulled from various legitimate golf news APIs (Global, African, and Kenyan). Use the filters to explore news from different perspectives, with the lead story highlighted for emphasis. For live news integration, a server-side proxy is typically required due to API security and CORS limitations.</p>
-                </div>
-                <div class="flex justify-center space-x-2 sm:space-x-4 mb-10">
-                    <button class="filter-button active" data-category="global">Global</button>
-                    <button class="filter-button" data-category="africa">Africa</button>
-                    <button class="filter-button" data-category="kenya">Kenya</button>
-                </div>
-                <div id="latest-news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
-            </div>
-        </section>
-
-        <section id="instruction-tips-section" class="py-20 fade-in-section">
-            <div class="container px-6">
-                <div class="text-center max-w-3xl mx-auto">
-                    <h2 class="section-title text-4xl font-bold mb-4">Elevate Your Game</h2>
-                    <p class="text-lg text-gray-600 mb-12">Here you will find expert instruction and strategy guides designed to improve every aspect of your performance, from swing mechanics to on-course mental fortitude. This content is curated and maintained directly by our editorial team.</p>
-                </div>
-                <div class="bg-white rounded-xl card-shadow overflow-hidden mb-12 md:flex md:flex-row-reverse items-center">
-                    <div class="md:w-1/2"><img src="https://placehold.co/900x600/2c4c3b/FDFDF2?text=Swing+Analysis" alt="Golf Swing Tip" class="w-full h-auto object-cover"></div>
-                    <div class="md:w-1/2 p-8 md:p-12 text-center md:text-left">
-                        <p class="text-sm font-semibold text-indigo-600 uppercase mb-3 tracking-wider">SWING MECHANICS</p>
-                        <h3 class="section-title text-3xl font-bold leading-tight mb-6">Master Your Drive: Eliminate Your Slice</h3>
-                        <p class="text-lg text-gray-700 mb-8">Uncover the foundational techniques to perfect your golf swing and achieve straighter, more powerful drives. Our expert drills will guide you step-by-step.</p>
-                        <a href="#" class="apple-button">Watch Tutorial</a>
-                    </div>
-                </div>
-                <div class="bg-white rounded-xl card-shadow overflow-hidden md:flex items-center">
-                    <div class="md:w-1/2"><img src="https://placehold.co/900x600/2c4c3b/FDFDF2?text=Putting+Secrets" alt="Putting Secrets" class="w-full h-auto object-cover"></div>
-                    <div class="md:w-1/2 p-8 md:p-12 text-center md:text-left">
-                        <p class="text-sm font-semibold text-red-600 uppercase mb-3 tracking-wider">PUTTING STRATEGY</p>
-                        <h3 class="section-title text-3xl font-bold leading-tight mb-6">The Art of the Green: Sink More Putts</h3>
-                        <p class="text-lg text-gray-700 mb-8">Learn the advanced strategies and subtle nuances of green reading that professional golfers use to dominate the putting surface.</p>
-                        <a href="#" class="apple-button">Download Guide</a>
-                    </div>
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Driving the Future of Golf in Africa</h1>
+                <p>Welcome to The Great and Grand – your premier source for inspiring stories, expert insights, and the vibrant growth of golf among youth across the African continent.</p>
+                <div class="cta-buttons">
+                    <a href="#discover">Explore Stories</a>
+                    <a href="#store-coming-soon">Our Store (Coming Soon)</a>
                 </div>
             </div>
         </section>
 
-        <section id="equipment-reviews-section" class="bg-[var(--color-light-ivory-bg)] py-20 fade-in-section">
-            <div class="container px-6">
-                 <div class="text-center max-w-3xl mx-auto">
-                    <h2 class="section-title text-4xl font-bold mb-4">The Right Gear for Your Game</h2>
-                    <p class="text-lg text-gray-600 mb-12">This is your guide to the latest golf equipment. We provide unbiased reviews and comparisons to help you select the gear that best fits your style of play and enhances your performance. All reviews are internally produced.</p>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <article class="bg-white rounded-xl card-shadow overflow-hidden transform transition-transform duration-300 hover:scale-[1.02]">
-                        <img src="https://placehold.co/400x250/2c4c3b/FDFDF2?text=New+Driver" alt="New Driver Review" class="w-full h-48 object-cover border-b border-[var(--color-border-subtle)]">
-                        <div class="p-5 text-center"><p class="text-xs font-semibold text-gray-600 uppercase mb-2 tracking-wider">DRIVERS</p><h3 class="font-bold text-lg mb-3">The 2025 Distance Driver</h3><a href="#" class="text-[var(--color-primary-green)] font-medium text-sm hover:underline">Read Review &rarr;</a></div>
+        <section id="discover">
+            <div class="container">
+                <h2>Our Latest Stories & Features</h2>
+                <div class="magazine-grid">
+                    <article class="magazine-article">
+                        <img src="https://via.placeholder.com/600x400?text=Youth+Golfer+in+Kenya" alt="Young golfer on a course in Kenya, The Great and Grand Magazine">
+                        <div class="article-content">
+                            <h3>Rising Stars: Meet Kenya's Next Golf Sensation</h3>
+                            <p>Discover the incredible journey of a young prodigy from Nairobi, breaking barriers and setting new records on the green with passion and dedication. Learn about her training regimen and aspirations...</p>
+                            <a href="#" class="read-more">Read More</a>
+                        </div>
                     </article>
-                    <article class="bg-white rounded-xl card-shadow overflow-hidden transform transition-transform duration-300 hover:scale-[1.02]">
-                        <img src="https://placehold.co/400x250/2c4c3b/FDFDF2?text=Iron+Set" alt="Iron Set Review" class="w-full h-48 object-cover border-b border-[var(--color-border-subtle)]">
-                        <div class="p-5 text-center"><p class="text-xs font-semibold text-orange-600 uppercase mb-2 tracking-wider">IRONS</p><h3 class="font-bold text-lg mb-3">Top 5 Forgiving Iron Sets</h3><a href="#" class="text-[var(--color-primary-green)] font-medium text-sm hover:underline">Read Review &rarr;</a></div>
+
+                    <article class="magazine-article">
+                        <img src="https://via.placeholder.com/600x400?text=Golf+Course+Africa" alt="Scenic golf course in South Africa, The Great and Grand Magazine">
+                        <div class="article-content">
+                            <h3>Beyond the Fairway: Africa's Most Breathtaking Golf Courses</h3>
+                            <p>From the majestic Drakensberg mountains to the serene coastal greens, explore where to play and how to immerse yourself in Africa's stunning golf landscapes. A must-visit guide for enthusiasts...</p>
+                            <a href="#" class="read-more">Read More</a>
+                        </div>
                     </article>
-                    <article class="bg-white rounded-xl card-shadow overflow-hidden transform transition-transform duration-300 hover:scale-[1.02]">
-                        <img src="https://placehold.co/400x250/2c4c3b/FDFDF2?text=Putter" alt="Putter Review" class="w-full h-48 object-cover border-b border-[var(--color-border-subtle)]">
-                        <div class="p-5 text-center"><p class="text-xs font-semibold text-purple-600 uppercase mb-2 tracking-wider">PUTTERS</p><h3 class="font-bold text-lg mb-3">Guaranteed More Made Putts?</h3><a href="#" class="text-[var(--color-primary-green)] font-medium text-sm hover:underline">Read Review &rarr;</a></div>
+
+                    <article class="magazine-article">
+                        <img src="https://via.placeholder.com/600x400?text=Training+Tips+Youth" alt="Kids practicing golf swing, The Great and Grand Training">
+                        <div class="article-content">
+                            <h3>Swing Smart: Essential Training Tips for Young Golfers</h3>
+                            <p>Expert coaches share their invaluable secrets for developing a powerful, consistent swing while ensuring fun and healthy development in young players. Practical advice for practice sessions...</p>
+                            <a href="#" class="read-more">Read More</a>
+                        </div>
                     </article>
-                    <article class="bg-white rounded-xl card-shadow overflow-hidden transform transition-transform duration-300 hover:scale-[1.02]">
-                        <img src="https://placehold.co/400x250/2c4c3b/FDFDF2?text=Golf+Balls" alt="Golf Balls Review" class="w-full h-48 object-cover border-b border-[var(--color-border-subtle)]">
-                        <div class="p-5 text-center"><p class="text-xs font-semibold text-teal-600 uppercase mb-2 tracking-wider">GOLF BALLS</p><h3 class="font-bold text-lg mb-3">Choosing the Ideal Golf Ball</h3><a href="#" class="text-[var(--color-primary-green)] font-medium text-sm hover:underline">Read Review &rarr;</a></div>
+
+                    <article class="magazine-article">
+                        <img src="https://via.placeholder.com/600x400?text=Community+Golf+Program" alt="Group of kids playing golf in a community program, The Great and Grand Initiative">
+                        <div class="article-content">
+                            <h3>Impact Story: Golf Programs Changing Lives in Rural Africa</h3>
+                            <p>Witness how innovative community-led initiatives are introducing golf to underprivileged youth, fostering discipline, education, and unparalleled opportunities through the sport's values...</p>
+                            <a href="#" class="read-more">Read More</a>
+                        </div>
+                    </article>
+
+                    <article class="magazine-article">
+                        <img src="https://via.placeholder.com/600x400?text=African+Golf+History" alt="Historical image of African golfers, The Great and Grand Heritage">
+                        <div class="article-content">
+                            <h3>A Legacy of Green: Tracing African Golf History</h3>
+                            <p>Dive into the rich and often untold history of golf in Africa, from colonial origins to the rise of local legends and the sport's evolving cultural significance on the continent...</p>
+                            <a href="#" class="read-more">Read More</a>
+                        </div>
+                    </article>
+
+                    <article class="magazine-article">
+                        <img src="https://via.placeholder.com/600x400?text=Young+African+Ambassador" alt="Young African golf ambassador, The Great and Grand Ambassador">
+                        <div class="article-content">
+                            <h3>Future Ambassadors: Youth Driving Golf's Popularity</h3>
+                            <p>Meet the young, passionate individuals who are becoming powerful ambassadors for golf, inspiring their peers and communities to embrace the sport across various African nations...</p>
+                            <a href="#" class="read-more">Read More</a>
+                        </div>
                     </article>
                 </div>
             </div>
         </section>
 
-        <section id="courses-section" class="py-20 fade-in-section">
-            <div class="container px-6">
-                <div class="text-center max-w-3xl mx-auto">
-                    <h2 class="section-title text-4xl font-bold mb-4">Discover World-Class Courses</h2>
-                    <p class="text-lg text-gray-600 mb-12">Journey with us to the world's most breathtaking golf destinations. This section features detailed reviews, travel guides, and stunning photography of top courses, all compiled by our editorial team.</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="bg-white rounded-xl card-shadow p-6"><img src="https://placehold.co/600x400/2c4c3b/FDFDF2?text=Course+Feature+1" alt="Golf Course Feature" class="w-full h-48 object-cover rounded-md mb-4 border"><h3 class="font-bold text-xl mb-2">The Links of St. Andrews</h3><p class="text-gray-700 mb-4">Explore the history and challenges of golf's most iconic courses around the globe.</p><a href="#" class="text-[var(--color-primary-green)] font-medium text-sm hover:underline">View Details &rarr;</a></div>
-                    <div class="bg-white rounded-xl card-shadow p-6"><img src="https://placehold.co/600x400/2c4c3b/FDFDF2?text=Course+Feature+2" alt="Golf Course Feature" class="w-full h-48 object-cover rounded-md mb-4 border"><h3 class="font-bold text-xl mb-2">Hidden Gems of Africa</h3><p class="text-gray-700 mb-4">Uncover breathtaking and challenging golf destinations across the African continent.</p><a href="#" class="text-[var(--color-primary-green)] font-medium text-sm hover:underline">Explore Courses &rarr;</a></div>
-                    <div class="bg-white rounded-xl card-shadow p-6"><img src="https://placehold.co/600x400/2c4c3b/FDFDF2?text=Course+Feature+3" alt="Golf Course Feature" class="w-full h-48 object-cover rounded-md mb-4 border"><h3 class="font-bold text-xl mb-2">Kenya's Premier Destinations</h3><p class="text-gray-700 mb-4">A guide to the finest golf courses in Kenya, offering unique landscapes and unforgettable rounds.</p><a href="#" class="text-[var(--color-primary-green)] font-medium text-sm hover:underline">See Kenyan Courses &rarr;</a></div>
+        <section id="store-coming-soon">
+            <div class="container">
+                <h2>Our Grand Collection is Coming Soon!</h2>
+                <p>Get ready for exclusive golf apparel, premium training gear, and unique merchandise designed specifically for aspiring young golfers and enthusiasts who embody the spirit of The Great and Grand. Be the first to know when we launch!</p>
+                <div class="notify-form">
+                    <input type="email" placeholder="Enter your email address" required>
+                    <button type="submit">Notify Me</button>
                 </div>
             </div>
         </section>
 
-        <section id="videos-section" class="bg-[var(--color-light-ivory-bg)] py-20 fade-in-section">
-            <div class="container px-6">
-                 <div class="text-center max-w-3xl mx-auto">
-                    <h2 class="section-title text-4xl font-bold mb-4">Watch & Learn: Golf Videos</h2>
-                    <p class="text-lg text-gray-600 mb-12">Visual learners can dive into our video library, which includes everything from swing analyses and instructional series to exclusive behind-the-scenes tournament footage, all produced by our team.</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="bg-white rounded-xl card-shadow p-6"><img src="https://placehold.co/600x350/2c4c3b/FDFDF2?text=Video+1" alt="Golf Video" class="w-full h-48 object-cover rounded-md mb-4 border"><h3 class="font-bold text-xl mb-2">Pro Swing Analysis</h3><p class="text-gray-700 mb-4">Break down the mechanics of a powerful golf swing with our expert analysis.</p><a href="#" class="text-[var(--color-primary-green)] font-medium text-sm hover:underline">Watch Video &rarr;</a></div>
-                    <div class="bg-white rounded-xl card-shadow p-6"><img src="https://placehold.co/600x350/2c4c3b/FDFDF2?text=Video+2" alt="Golf Video" class="w-full h-48 object-cover rounded-md mb-4 border"><h3 class="font-bold text-xl mb-2">Chipping Masterclass</h3><p class="text-gray-700 mb-4">Learn essential chipping techniques to improve your short game and save strokes.</p><a href="#" class="text-[var(--color-primary-green)] font-medium text-sm hover:underline">Watch Video &rarr;</a></div>
-                    <div class="bg-white rounded-xl card-shadow p-6"><img src="https://placehold.co/600x350/2c4c3b/FDFDF2?text=Video+3" alt="Golf Video" class="w-full h-48 object-cover rounded-md mb-4 border"><h3 class="font-bold text-xl mb-2">Major Tournament Prep</h3><p class="text-gray-700 mb-4">An exclusive look at how golf's biggest events are prepared, from courses to players.</p><a href="#" class="text-[var(--color-primary-green)] font-medium text-sm hover:underline">Watch Video &rarr;</a></div>
-                </div>
+        <section id="about" style="display: none;">
+            <div class="container">
+                <h2>About The Great and Grand</h2>
+                <p>At The Great and Grand, our mission is to ignite a passion for golf among African youth, highlight the sport's vibrant and growing presence across the continent, and inspire the next generation of golfers to achieve greatness. We firmly believe in the transformative power of sport to build character, foster resilience, and strengthen communities.</p>
+                <p>Through compelling storytelling, educational content, and community engagement, we aim to showcase African golf's unique spirit and its potential to shape future leaders on and off the course.</p>
             </div>
+        </section>
+
+        <section id="contact" style="display: none;">
+            <div class="container">
+                <h2>Connect with The Great and Grand</h2>
+                <p>Have an inspiring story to share? Interested in partnership opportunities? Or just want to say hello?</p>
+                <p>Reach out to us:</p>
+                <p>Email: <a href="mailto:info@thegreatandgrand.org" style="color: var(--primary-green); text-decoration: underline;">info@thegreatandgrand.org</a></p>
+                <p>Follow us on social media for daily updates and inspiration!</p>
+                </div>
         </section>
     </main>
 
-    <footer class="bg-[var(--color-primary-green)] text-[var(--color-ivory)] py-12 mt-16">
-        <div class="container mx-auto px-6 text-center">
-            <p class="text-2xl font-bold mb-4 uppercase tracking-wide logo-font">THE GREAT AND GRAND</p>
-            <nav class="flex flex-wrap justify-center space-x-6 mb-8">
-                <a href="#" class="hover:text-white transition duration-300 text-sm py-1">About Us</a>
-                <a href="#" class="hover:text-white transition duration-300 text-sm py-1">Contact</a>
-                <a href="#" class="hover:text-white transition duration-300 text-sm py-1">Privacy Policy</a>
-                <a href="#" class="hover:text-white transition duration-300 text-sm py-1">Terms of Service</a>
-                <a href="#" class="hover:text-white transition duration-300 text-sm py-1">Advertise</a>
-            </nav>
-            <p class="text-white text-sm opacity-80">&copy; 2025 The Great and Grand. All rights reserved.</p>
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 The Great and Grand. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#" aria-label="Facebook">Facebook</a> |
+                <a href="#" aria-label="Instagram">Instagram</a> |
+                <a href="#" aria-label="Twitter">Twitter</a>
+            </div>
         </div>
     </footer>
 
-    <script>
-        // Simulated News Data (would be fetched from APIs via a proxy in a live site)
-        const newsData = {
-            global: [
-                { title: "Major Championship Nears: World's Best Descend", description: "Anticipation builds as top golfers prepare for the season's next major, promising thrilling competition and showcasing elite skill.", url: "#", imageUrl: "https://placehold.co/900x600/2c4c3b/FDFDF2?text=Global+Pro+Tour" },
-                { title: "Innovation in Golf Equipment: New Technologies Revealed", description: "Groundbreaking advancements in clubs and balls are set to revolutionize the way the game is played globally, enhancing performance for all levels.", url: "#", imageUrl: "https://placehold.co/600x350/2c4c3b/FDFDF2?text=Global+Tech+Golf" },
-                { title: "Sustainable Golf Course Initiatives Gain Momentum Worldwide", description: "Golf courses globally are adopting eco-friendly practices to preserve environments and promote responsible tourism, ensuring the sport's future.", url: "#", imageUrl: "https://placehold.co/600x350/2c4c3b/FDFDF2?text=Global+Green+Golf" },
-                { title: "Behind the Scenes: Inside a Top Golf Academy", description: "An exclusive look into the training facilities and methods of an elite golf academy shaping future champions with cutting-edge techniques.", url: "#", imageUrl: "https://placehold.co/600x350/2c4c3b/FDFDF2?text=Golf+Academy" },
-                { title: "The Evolution of Golf Course Architecture", description: "Exploring how course design has adapted over centuries to challenge and delight golfers, from classic layouts to modern marvels.", url: "#", imageUrl: "https://placehold.co/600x350/2c4c3b/FDFDF2?text=Course+Design" }
-            ],
-            africa: [
-                { title: "Sunshine Tour: Rising African Stars Dominate Leaderboard", description: "Local talents shine brightly at the latest Sunshine Tour event, signalling a new era for African golf and showcasing regional prowess.", url: "#", imageUrl: "https://placehold.co/900x600/2c4c3b/FDFDF2?text=African+Star+Golf" },
-                { title: "Investment Surges in African Golf Tourism Sector", description: "New developments and luxury resorts across Africa are attracting international golf enthusiasts, boosting local economies and experiences.", url: "#", imageUrl: "https://placehold.co/600x350/2c4c3b/FDFDF2?text=African+Resort+Golf" },
-                { title: "Youth Golf Programs Flourish Across South Africa", description: "Grassroots initiatives are nurturing the next generation of golfers in various communities across the continent, building a strong foundation.", url: "#", imageUrl: "https://placehold.co/600x350/2c4c3b/FDFDF2?text=African+Youth+Golf" },
-                { title: "African Amateurs Eye Global Stage After Strong Season", description: "Promising amateur golfers from various African nations are setting their sights on international competitions, demonstrating growing talent.", url: "#", imageUrl: "https://placehold.co/600x350/2c4c3b/FDFDF2?text=African+Amateurs" },
-                { title: "Golf's Growth in West Africa: New Courses and Clubs", description: "A look at the expanding golf infrastructure and community in countries like Ghana and Nigeria, fostering regional development.", url: "#", imageUrl: "https://placehold.co/600x350/2c4c3b/FDFDF2?text=West+Africa+Golf" }
-            ],
-            kenya: [
-                { title: "Magical Kenya Open: Local Hero Makes Strong Showing", description: "A Kenyan golfer delivers a memorable performance at the prestigious Magical Kenya Open, thrilling home crowds and raising national pride.", url: "#", imageUrl: "https://placehold.co/900x600/2c4c3b/FDFDF2?text=Kenya+Open+Hero" },
-                { title: "Junior Golf Foundation Kenya Hosts National Championship", description: "Young Kenyan talents compete for top honors in a fiercely contested national junior golf tournament, highlighting future prospects.", url: "#", imageUrl: "https://placehold.co/600x350/2c4c3b/FDFDF2?text=Kenya+Junior+Golf" },
-                { title: "New Golf Courses Under Development in Coastal Kenya", description: "Exciting plans are underway to expand Kenya's golf landscape with stunning new coastal courses, attracting more tourism and players.", url: "#", imageUrl: "https://placehold.co/600x350/2c4c3b/FDFDF2?text=Kenya+Coastal+Golf" },
-                { title: "Kenyan Golfers Prepare for East African Tournaments", description: "Kenya's top golfers are intensifying their training for upcoming regional competitions, aiming for victory and continued regional dominance.", url: "#", imageUrl: "https://placehold.co/600x350/2c4c3b/FDFDF2?text=Kenya+Regional+Tour" },
-                { title: "Community Impact: Golf Programs Changing Lives", description: "Inspiring stories of how golf development programs are providing opportunities for youth in Kenyan urban areas, fostering skill and hope.", url: "#", imageUrl: "https://placehold.co/600x350/2c4c3b/FDFDF2?text=Kenya+Community+Golf" }
-            ]
-        };
-        function renderArticles(articles) {
-            const newsGrid = document.getElementById('latest-news-grid');
-            newsGrid.innerHTML = '';
-            if (!articles || articles.length === 0) {
-                newsGrid.innerHTML = '<p class="text-center text-gray-700 col-span-full">No recent golf news found for this category.</p>';
-                return;
-            }
-            articles.forEach((article, index) => {
-                const isFeatured = index === 0;
-                const articleHtml = `
-                    <article class="${isFeatured ? 'featured-news-article' : ''} bg-white rounded-xl card-shadow overflow-hidden transform transition-transform duration-300 hover:scale-[1.02]">
-                        <img src="${article.imageUrl}" alt="${article.title}" class="w-full object-cover border-b border-[var(--color-border-subtle)] ${isFeatured ? 'article-img' : 'h-56'}" onerror="this.onerror=null;this.src='https://placehold.co/600x350/2c4c3b/FDFDF2?text=Image+Unavailable';">
-                        <div class="p-6 ${isFeatured ? 'article-content' : ''}">
-                            <p class="text-xs font-semibold text-[var(--color-primary-green)] uppercase mb-2 tracking-wider">${isFeatured ? 'FEATURED' : 'NEWS UPDATE'}</p>
-                            <h3 class="font-bold ${isFeatured ? 'text-2xl md:text-3xl' : 'text-xl'} mb-3 leading-snug ${isFeatured ? 'hero-title' : ''}">${article.title}</h3>
-                            <p class="text-gray-600 text-base mb-4 line-clamp-${isFeatured ? '4' : '3'}">${article.description}</p>
-                            <a href="${article.url}" target="_blank" rel="noopener noreferrer" class="text-[var(--color-primary-green)] font-medium ${isFeatured ? 'text-base' : 'text-sm'} hover:underline">Read More &rarr;</a>
-                        </div>
-                    </article>`;
-                newsGrid.insertAdjacentHTML('beforeend', articleHtml);
-            });
-        }
-        function fetchGolfNews(category = 'global') {
-            const newsGrid = document.getElementById('latest-news-grid');
-            newsGrid.innerHTML = '<p class="text-center text-gray-500 col-span-full">Loading latest golf news...</p>';
-            
-            // --- This is where your live API call via proxy would go ---
-            // In a real deployment, you'd replace the setTimeout with a 'fetch' call to your serverless function/proxy.
-            // Example:
-            // fetch(`/.netlify/functions/golf-news-proxy?category=${category}`)
-            //     .then(response => response.json())
-            //     .then(data => {
-            //         renderArticles(data.articles); // Your proxy should transform data to match this format
-            //     })
-            //     .catch(error => {
-            //         console.error("Error fetching live news:", error);
-            //         // Fallback to simulated data on error
-            //         renderArticles(newsData[category] || newsData.global); 
-            //         newsGrid.insertAdjacentHTML('afterbegin', '<p class="text-center text-red-600 col-span-full">Could not fetch live news. Showing cached data.</p>');
-            //     })
-            //     .finally(() => {
-            //         document.querySelectorAll('.filter-button').forEach(button => {
-            //             button.classList.toggle('active', button.dataset.category === category);
-            //         });
-            //     });
-
-            // For now, simulating the fetch:
-            setTimeout(() => {
-                const articlesToDisplay = newsData[category] || newsData.global;
-                renderArticles(articlesToDisplay);
-                document.querySelectorAll('.filter-button').forEach(button => {
-                    button.classList.toggle('active', button.dataset.category === category);
-                });
-            }, 300); // Simulate network delay
-        }
-        function handleHeroScroll() {
-            const heroTextContent = document.getElementById('hero-text-content');
-            if (!heroTextContent) return;
-            const scrollPosition = window.pageYOffset;
-            let opacity = 1 - (scrollPosition / 400);
-            heroTextContent.style.opacity = Math.max(0, opacity);
-            heroTextContent.style.transform = `translateY(${scrollPosition * 0.2}px)`;
-        }
-        function setupEventListeners() {
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const closeMobileMenuButton = document.getElementById('close-mobile-menu');
-            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
-            const fadeSections = document.querySelectorAll('.fade-in-section');
-            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
-            const sectionObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, observerOptions);
-            fadeSections.forEach(section => sectionObserver.observe(section));
-            window.addEventListener('scroll', handleHeroScroll);
-            mobileMenuButton.addEventListener('click', () => {
-                mobileMenu.classList.remove('hidden');
-                setTimeout(() => mobileMenu.classList.add('open'), 10);
-            });
-            const closeMenu = () => {
-                mobileMenu.classList.remove('open');
-                setTimeout(() => mobileMenu.classList.add('hidden'), 300);
-            };
-            closeMobileMenuButton.addEventListener('click', closeMenu);
-            mobileMenuLinks.forEach(link => link.addEventListener('click', closeMenu));
-            document.querySelectorAll('.filter-button').forEach(button => {
-                button.addEventListener('click', (event) => {
-                    fetchGolfNews(event.target.dataset.category);
-                });
-            });
-        }
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchGolfNews('global');
-            handleHeroScroll();
-            setupEventListeners();
-        });
-    </script>
 </body>
 </html>
