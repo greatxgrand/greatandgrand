@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Great and Grand - Discover Golf in Africa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         /* Basic Reset & Box Sizing */
         * {
@@ -24,11 +27,17 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Poppins', sans-serif; /* Poppins for general text */
             background-color: var(--secondary-ivory);
             color: var(--text-color-dark);
             line-height: 1.6;
             scroll-behavior: smooth; /* Smooth scrolling for anchor links */
+        }
+
+        /* Titles and special text using Playfair Display */
+        h1, h2, h3, .logo {
+            font-family: 'Playfair Display', serif; /* Luxurious Roman */
+            font-weight: 700; /* Bold for impact */
         }
 
         .container {
@@ -47,7 +56,6 @@
 
         header .logo {
             font-size: 2.5em;
-            font-weight: bold;
             margin-bottom: 10px;
             letter-spacing: 2px;
             text-transform: uppercase; /* Ensure logo is uppercase */
@@ -71,6 +79,8 @@
             font-size: 1.1em;
             padding: 5px 0;
             transition: color 0.3s ease, border-bottom 0.3s ease;
+            font-family: 'Poppins', sans-serif; /* Ensure nav uses Poppins */
+            font-weight: 500; /* Medium weight for clarity */
         }
 
         nav ul li a:hover {
@@ -97,6 +107,7 @@
             font-size: 1.3em;
             max-width: 800px;
             margin: 0 auto 30px;
+            font-family: 'Poppins', sans-serif; /* Ensure Poppins */
         }
 
         .hero .cta-buttons a {
@@ -109,6 +120,8 @@
             border-radius: 5px;
             font-size: 1.1em;
             transition: background-color 0.3s ease, transform 0.3s ease;
+            font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+            font-weight: 500; /* Medium weight for buttons */
         }
 
         .hero .cta-buttons a:hover {
@@ -172,6 +185,7 @@
             margin-bottom: 20px;
             height: 75px; /* Fixed height for excerpt, add ellipsis with JS/CSS if needed */
             overflow: hidden;
+            font-family: 'Poppins', sans-serif; /* Ensure Poppins */
         }
 
         .read-more {
@@ -183,6 +197,8 @@
             border-radius: 5px;
             font-size: 0.95em;
             transition: background-color 0.3s ease;
+            font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+            font-weight: 500;
         }
 
         .read-more:hover {
@@ -209,6 +225,7 @@
             font-size: 1.4em;
             max-width: 800px;
             margin: 0 auto 40px;
+            font-family: 'Poppins', sans-serif; /* Ensure Poppins */
         }
 
         .notify-form {
@@ -227,6 +244,7 @@
             max-width: 90%; /* Adjust width for smaller screens */
             background-color: var(--secondary-ivory);
             color: var(--text-color-dark);
+            font-family: 'Poppins', sans-serif; /* Ensure Poppins */
         }
 
         .notify-form button {
@@ -239,6 +257,7 @@
             cursor: pointer;
             transition: background-color 0.3s ease, color 0.3s ease;
             font-weight: bold;
+            font-family: 'Poppins', sans-serif; /* Ensure Poppins */
         }
 
         .notify-form button:hover {
@@ -264,6 +283,7 @@
             font-size: 1.1em;
             max-width: 800px;
             margin: 0 auto 15px;
+            font-family: 'Poppins', sans-serif; /* Ensure Poppins */
         }
 
 
@@ -275,6 +295,7 @@
             padding: 40px 0;
             margin-top: 60px;
             font-size: 0.95em;
+            font-family: 'Poppins', sans-serif; /* Ensure Poppins */
         }
 
         footer p {
